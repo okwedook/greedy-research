@@ -10,17 +10,19 @@ An optimization requires:
 
 class OptimizationProblem:
     def __init__(self) -> None:
-        self.f = lambda x: 0
-        self.g = lambda x: 0
+        raise NotImplementedError
 
     def getSpace(self) -> spaces.Space:
         raise NotImplementedError
-    
+
     def eval(self, x):
         return self.f(x)
-    
+
     def getConstraint(self, x):
         return self.g(x)
+
+    def inConstraint(self, x) -> bool:
+        return self.g(x) >= 0
 
 # ax^2 + by^2 + ... + c >= 0
 class QuadraticOptimization(OptimizationProblem):
