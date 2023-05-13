@@ -43,6 +43,9 @@ class Box(Space[np.dtype]):
         high = np.array(high)
         assert(low.shape == high.shape)
         super().__init__(low.shape, dtype, seed)
+        if np.dtype(dtype).kind == "i":
+            low = np.ceil(low)
+            high = np.floor(high) + 1
         self.low = low
         self.high = high
 
