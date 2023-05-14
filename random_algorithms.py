@@ -13,4 +13,3 @@ def bestSample(opt: OptimizationProblem, X: Space, n_tries: int = 10):
                 best_value = value
                 best_point = x
     return best_point, best_value
-        

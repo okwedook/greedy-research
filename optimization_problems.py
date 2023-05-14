@@ -1,14 +1,13 @@
 import numpy as np
 import spaces
 
-'''
-An optimization requires:
-- Parameter space X
-- Objective function f -> R
-- Constraint function g -> R ^ k
-'''
-
 class OptimizationProblem:
+    """
+        An optimization problem requires:
+        - Parameter space X
+        - Objective function f -> R
+        - Constraint function g -> R ^ k
+    """
     def __init__(self) -> None:
         raise NotImplementedError
 
@@ -40,6 +39,6 @@ class QuadraticOptimization(OptimizationProblem):
         return np.dot(np.multiply(x, x), self.c2) + np.dot(x, self.c1) + self.c0
 
 # ax + by + ... + c >= 0
-class LinearOptimization(OptimizationProblem):
-    def __init__(self) -> None:
-        super().__init__()
+# class LinearOptimization(OptimizationProblem):
+#     def __init__(self) -> None:
+#         super().__init__()

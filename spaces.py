@@ -1,5 +1,5 @@
 from random import randint
-from typing import Optional, Tuple, Sequence, Union, Type, Generic, TypeVar
+from typing import Optional, Tuple, Sequence, Generic, TypeVar
 import numpy as np
 
 T_cov = TypeVar("T_cov", covariant=True)
@@ -23,12 +23,12 @@ class Space(Generic[T_cov]):
         return self.shape
 
 # Creates a space with n options in range [0, n)
-class Discrete(Space):
-    def __init__(self, n) -> None:
-        self.n = n
+# class Discrete(Space):
+#     def __init__(self, n_options: int):
+#         self.n = n_options
 
-    def genSample(self) -> int:
-        return randint(0, self.n - 1)
+#     def genSample(self) -> int:
+#         return randint(0, self.n - 1)
 
 # Closed box in Euclidean space
 class Box(Space[np.dtype]):
@@ -55,4 +55,3 @@ class Box(Space[np.dtype]):
             sample = np.floor(sample)
         
         return sample.astype(self.dtype)
-        
