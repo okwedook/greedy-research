@@ -1,11 +1,16 @@
+"""
+    Collection of random algorithms that solve a given optimization problem
+"""
+
+import numpy as np
+
 from optimization_problems import OptimizationProblem
 from spaces import Space
-import numpy as np
 
 def bestSample(opt: OptimizationProblem, X: Space, n_tries: int = 10):
     best_value = -np.inf
     best_point = None
-    for t in range(n_tries):
+    for _ in range(n_tries):
         x = X.genSample()
         if opt.inConstraint(x):
             value = opt.f(x)

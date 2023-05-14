@@ -1,10 +1,18 @@
-from random import randint
+"""
+    Description of different spaces, which include:
+    - Discrete
+    - Box (Euclidean N-dimensional space)
+    - Other
+"""
+
 from typing import Optional, Tuple, Sequence, Generic, TypeVar
+
 import numpy as np
 
-T_cov = TypeVar("T_cov", covariant=True)
 
-class Space(Generic[T_cov]):
+T_cov_co = TypeVar("T_cov_co", covariant=True)
+
+class Space(Generic[T_cov_co]):
     def __init__(
         self,
         shape: Sequence[int],
@@ -41,7 +49,7 @@ class Box(Space[np.dtype]):
     ):
         low = np.array(low)
         high = np.array(high)
-        assert(low.shape == high.shape)
+        assert low.shape == high.shape
         super().__init__(low.shape, dtype, seed)
         if np.dtype(dtype).kind == "i":
             low = np.ceil(low)
@@ -53,5 +61,5 @@ class Box(Space[np.dtype]):
         sample = self.rng.uniform(low=self.low, high=self.high)
         if np.dtype(self.dtype).kind == "i":
             sample = np.floor(sample)
-        
+
         return sample.astype(self.dtype)

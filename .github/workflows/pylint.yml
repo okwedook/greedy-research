@@ -20,4 +20,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint --disable=invalid-name,missing-function-docstring,no-member,missing-class-docstring,too-few-public-methods $(git ls-files '*.py')

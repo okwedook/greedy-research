@@ -1,7 +1,12 @@
+"""
+    Example of library usage
+"""
+
+import numpy as np
+
 from spaces import Box
 from optimization_problems import QuadraticOptimization
 from random_algorithms import bestSample
-import numpy as np
 
 X = Box([0, 0], [20, 20], dtype=np.int32)
 

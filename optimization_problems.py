@@ -1,13 +1,15 @@
+"""
+    An optimization problem requires:
+    - Parameter space X
+    - Objective function f -> R
+    - Constraint function g -> R ^ k
+"""
+
 import numpy as np
+
 import spaces
 
 class OptimizationProblem:
-    """
-        An optimization problem requires:
-        - Parameter space X
-        - Objective function f -> R
-        - Constraint function g -> R ^ k
-    """
     def __init__(self) -> None:
         raise NotImplementedError
 
