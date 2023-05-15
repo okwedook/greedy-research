@@ -21,4 +21,4 @@ jobs:
         pip install -r requirements.txt
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=invalid-name,missing-function-docstring,no-member,missing-class-docstring,too-few-public-methods $(git ls-files '*.py')
+        pylint $(git ls-files '*.py')

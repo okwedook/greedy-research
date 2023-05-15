@@ -1,0 +1,5 @@
+disable=invalid-name,
+        missing-function-docstring,
+        no-member,
+        missing-class-docstring,
+        too-few-public-methods
