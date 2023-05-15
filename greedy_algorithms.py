@@ -9,19 +9,18 @@ from optimization_problems import OptimizationProblem
 
 def simpleGreedy(opt: OptimizationProblem, X: Space, x=None, render_path=False):
     x = np.array(x) if x else np.empty(X.shape)
-    should_continue = True
     if render_path:
         path = [x]
-    while should_continue:
-        should_continue = False
+    while True:
         V = X.getVicinity(x)
-        for v in V:
-            if opt.inConstraint(v):
-                if opt.f(v) > opt.f(x):
-                    x = v
-                    should_continue = True
-                    if render_path:
-                        path.append(x)
+        V = [v for v in V if opt.inConstraint(v)]
+        V.sort(key=opt.f, reverse=True)
+        if V and opt.f(V[0]) > opt.f(x):
+            x = V[0]
+            if render_path:
+                path.append(x)
+        else:
+            break
     if render_path:
         return x, path
     return x
