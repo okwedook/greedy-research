@@ -23,7 +23,7 @@ class OptimizationProblem:
         return self.g(x)
 
     def inConstraint(self, x) -> bool:
-        return self.g(x) >= 0
+        return self.g(x) <= 0
 
 # ax^2 + by^2 + ... + c >= 0
 class QuadraticOptimization(OptimizationProblem):

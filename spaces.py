@@ -6,6 +6,7 @@
 """
 
 from typing import Optional, Tuple, Sequence, Generic, TypeVar
+from itertools import product
 
 import numpy as np
 
@@ -29,14 +30,6 @@ class Space(Generic[T_cov_co]):
 
     def getShape(self) -> Optional[Tuple[int, ...]]:
         return self.shape
-
-# Creates a space with n options in range [0, n)
-# class Discrete(Space):
-#     def __init__(self, n_options: int):
-#         self.n = n_options
-
-#     def genSample(self) -> int:
-#         return randint(0, self.n - 1)
 
 # Closed box in Euclidean space
 class Box(Space[np.dtype]):
@@ -63,3 +56,18 @@ class Box(Space[np.dtype]):
             sample = np.floor(sample)
 
         return sample.astype(self.dtype)
+
+    def inside(self, x):
+        return np.all(np.less_equal(self.low, x)) and np.all(np.greater_equal(self.high, x))
+
+    def getVicinity(self, x):
+        if np.dtype(self.dtype).kind != "i":
+            raise NotImplementedError
+
+        ans = []
+
+        for d in product([-1, 0, 1], repeat=len(self.low)):
+            if self.inside(x + d):
+                ans.append(x + d)
+
+        return ans
