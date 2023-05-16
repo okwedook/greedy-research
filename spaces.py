@@ -7,6 +7,7 @@
 
 from typing import Optional, Tuple, Sequence, Generic, TypeVar
 from itertools import product
+from copy import deepcopy
 
 import numpy as np
 
@@ -73,3 +74,27 @@ class Box(Space[np.dtype]):
                 ans.append(x + d)
 
         return ans
+
+class MatrixBinary(Space):
+    def __init__(
+        self,
+        shape: Sequence[int],
+        seed: Optional[int] = None
+    ):
+        super().__init__(shape, 'bool', seed)
+
+    def genSample(self):
+        return self.rng.random(self.shape, dtype='bool')
+
+    def getVicinity(self, x):
+        assert x.shape == self.shape
+
+        V = []
+
+        for i in range(self.shape[0]):
+            for j in range(self.shape[1]):
+                x_copy = deepcopy(x)
+                x_copy[i][j] = not x_copy[i][j]
+                V.append(x_copy)
+
+        return V
