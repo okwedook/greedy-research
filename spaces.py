@@ -64,6 +64,8 @@ class Box(Space[np.dtype]):
         if np.dtype(self.dtype).kind != "i":
             raise NotImplementedError
 
+        x = np.array(x)
+
         ans = []
 
         for d in product([-1, 0, 1], repeat=len(self.low)):
