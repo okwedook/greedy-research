@@ -58,7 +58,9 @@ class Volume(CloudResource):
     pass
 
 class Pool(CloudResource):
-    pass
+    def __init__(self, vs, ps, bw, price=1):
+        super().__init__(vs, ps, bw)
+        self.price = price
 
 class CloudStorageScheduling(OptimizationProblem):
     def __init__(self, volumes, pools, thresholds):
@@ -103,7 +105,7 @@ class CloudStorageScheduling(OptimizationProblem):
 
         return used_resources, used_volumes, multiple_decision
 
-    def getStats(self, used_resources):
+    def getStats(self, used_resources, weighted):
         good_stat = 0
         bad_stat = 0
 
@@ -113,7 +115,7 @@ class CloudStorageScheduling(OptimizationProblem):
             if min_stat < 0:
                 bad_stat += min_stat
             else:
-                good_stat += min_stat
+                good_stat += (pool.price * pool.vs if weighted else 1) * min_stat
 
         return good_stat, bad_stat
 
@@ -122,12 +124,15 @@ class CloudStorageScheduling(OptimizationProblem):
 
         used_resources, used_volumes, _ = self.getUsedResources(x)
 
-        good_stat, bad_stat = self.getStats(used_resources)
+        good_stat, bad_stat = self.getStats(used_resources, weighted=True)
 
         if bad_stat != 0:
             return bad_stat
 
-        return good_stat + (2 * used_volumes if add_volumes else 0)
+        return (used_volumes * 1000 if add_volumes else 0) + good_stat
+
+    def real_f(self, x):
+        return self.f(x, add_volumes=True)
 
     def g(self, x):
         assert len(self.volumes) == len(x)
@@ -137,7 +142,7 @@ class CloudStorageScheduling(OptimizationProblem):
         if multiple_decision != 0:
             return multiple_decision
 
-        good_stat, bad_stat = self.getStats(used_resources)
+        good_stat, bad_stat = self.getStats(used_resources, weighted=False)
 
         if bad_stat:
             return -bad_stat

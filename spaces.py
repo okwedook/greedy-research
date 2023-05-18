@@ -84,14 +84,18 @@ class MatrixBinary(Space):
         super().__init__(shape, 'bool', seed)
 
     def genSample(self):
-        return self.rng.random(self.shape, dtype='bool')
+        matrix = self.rng.random(self.shape)
+        matrix = np.round(matrix).astype('bool')
+        return matrix
 
-    def getVicinity(self, x):
+    def getVicinity(self, x, cloudVicinity=True):
         assert x.shape == self.shape
 
         V = []
 
         for i in range(self.shape[0]):
+            if cloudVicinity and np.any(x[i]):
+                continue
             for j in range(self.shape[1]):
                 x_copy = deepcopy(x)
                 x_copy[i][j] = not x_copy[i][j]

@@ -22,6 +22,7 @@ def bestSample(opt: OptimizationProblem, X: Space, n_tries: int = 10):
     return best_point
 
 def randomVicinity(opt: OptimizationProblem, X: Space, x=None):
+    x = np.array(x) if x else np.zeros(X.shape, X.dtype)
     while True:
         v = [v for v in X.getVicinity(x) if opt.inConstraint(x) and opt.f(v) > opt.f(x)]
         if v:

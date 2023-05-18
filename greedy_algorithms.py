@@ -8,7 +8,7 @@ from spaces import Space
 from optimization_problems import OptimizationProblem
 
 def simpleGreedy(opt: OptimizationProblem, X: Space, x=None, render_path=False):
-    x = np.array(x) if x else np.empty(X.shape, X.dtype)
+    x = np.array(x) if x else np.zeros(X.shape, X.dtype)
     if render_path:
         path = [x]
     while True:
@@ -44,15 +44,17 @@ def LEGSplit(opt: OptimizationProblem, V, x):
             else:
                 G.append(v)
 
-    L.sort(key=lambda x: (fx - opt.f(x)) / (gx - opt.g(x)), reverse=True)
-    E.sort(key=opt.f, reverse=True)
-    G.sort(key=lambda x: (fx - opt.f(x)) / (gx - opt.g(x)), reverse=True)
+    rfx = opt.real_f(x)
+
+    L.sort(key=lambda x: (rfx - opt.real_f(x)) / (gx - opt.g(x)), reverse=True)
+    E.sort(key=opt.real_f, reverse=True)
+    G.sort(key=lambda x: (rfx - opt.real_f(x)) / (gx - opt.g(x)), reverse=True)
 
     return L, E, G
 
 
 def powerGreedy(opt: OptimizationProblem, X: Space, x=None, render_path=False):
-    x = np.array(x) if x else np.empty(X.shape, X.dtype)
+    x = np.array(x) if x else np.zeros(X.shape, X.dtype)
 
     if render_path:
         path = [x]
